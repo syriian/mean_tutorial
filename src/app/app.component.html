@@ -1,5 +1,8 @@
 <app-header></app-header>
 <main>
+  <!-- receive data from child -->
+  <!-- passing the function to store data along with the event triggered-->
   <app-post-create (postCreated)="onPostAdded($event)"></app-post-create>
+  <!-- Post data to child passing array with content-->
   <app-post-list [posts]="storedPosts"></app-post-list>
 </main>
