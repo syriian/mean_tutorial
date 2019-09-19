@@ -1,0 +1,17 @@
+<mat-card>
+  <mat-form-field>
+    <!-- Passing data to controller -->
+    <input matInput type="text" [(ngModel)]="enteredTitle" />
+  </mat-form-field>
+  <mat-form-field>
+    <!-- Passing data to controller -->
+    <textarea matInput rows="6" [(ngModel)]="enteredContent"></textarea>
+  </mat-form-field>
+
+  <!-- calling onAddPost method when click event occurs -->
+  <!-- more events available -->
+  <button mat-raised-button color="primary" (click)="onAddPost()">
+    Save Post
+  </button>
+</mat-card>
+<hr />
