@@ -1,6 +1,7 @@
 import { Component, Input } from "@angular/core";
 
 import { Post } from "../post.model";
+import { PostsService } from "../posts.service";
 
 @Component({
   selector: "app-post-list",
@@ -17,4 +18,10 @@ export class PostListComponent {
 
   //--------dynamic data - inputs from parent
   @Input() posts = [];
+  postsService: PostsService; // create variable
+
+  constructor(postsService: PostsService) {
+    //injecting instance of PostsService
+    this.postsService = postsService; //assigning the injected instance to local variable
+  }
 }
