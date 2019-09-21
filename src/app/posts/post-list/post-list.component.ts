@@ -1,4 +1,5 @@
-import { Component, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Subscription } from "rxjs";
 
 import { Post } from "../post.model";
 import { PostsService } from "../posts.service";
@@ -8,7 +9,7 @@ import { PostsService } from "../posts.service";
   templateUrl: "./post-list.component.html",
   styleUrls: ["./post-list.component.css"]
 })
-export class PostListComponent {
+export class PostListComponent implements OnInit, OnDestroy {
   //--------Dummy data------------//
   // posts = [
   //   { title: "first post", content: "this is the first post's content" },
@@ -17,11 +18,23 @@ export class PostListComponent {
   // ];
 
   //--------dynamic data - inputs from parent
-  @Input() posts = [];
-  postsService: PostsService; // create variable
+  posts: Post[] = [];
+  private postsSub: Subscription;
 
-  constructor(postsService: PostsService) {
+  constructor(public postsService: PostsService) {
     //injecting instance of PostsService
-    this.postsService = postsService; //assigning the injected instance to local variable
+  }
+
+  ngOnInit() {
+    this.postsService.getPosts();
+    this.postsSub = this.postsService
+      .getPostUpdateListener()
+      .subscribe((posts: Post[]) => {
+        this.posts = posts;
+      });
+  }
+
+  ngOnDestroy() {
+    this.postsSub.unsubscribe();
   }
 }

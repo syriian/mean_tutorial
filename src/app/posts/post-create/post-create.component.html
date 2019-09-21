@@ -13,6 +13,7 @@
         ngModel
         required
         minlength="3"
+        placeholder="Post title"
         #title="ngModel"
       />
       <!-- klient side validation -->
@@ -26,7 +27,7 @@
         name="content"
         ngModel
         required
-        minlength="20"
+        placeholder="Post content"
         #content="ngModel"
       ></textarea>
       <mat-error *ngIf="content.invalid">please enter post content</mat-error>

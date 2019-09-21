@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Output } from "@angular/core";
+import { Component } from "@angular/core";
 
-import { Post } from "../post.model";
 import { NgForm } from "@angular/forms";
+import { PostsService } from "../posts.service";
 
 @Component({
   selector: "app-post-create",
@@ -12,7 +12,9 @@ export class PostCreateComponent {
   enteredContent = "";
   enteredTitle = "";
   //---------outputs data to parent via the eventemitter of generic type post
-  @Output() postCreated = new EventEmitter<Post>();
+
+  //injecting posts service
+  constructor(public postsService: PostsService) {}
 
   //---Passing in form of type NgForm
   onAddPost(form: NgForm) {
@@ -20,12 +22,9 @@ export class PostCreateComponent {
     if (form.invalid) {
       return; // do nothing
     }
-    const post: Post = {
-      //---setting data when passed from view via the form object parameter.
-      title: form.value.title,
-      content: form.value.content
-    };
-    //----Calling the emit function with param of type post
-    this.postCreated.emit(post);
+
+    //---- calling addPost function via the service.
+    this.postsService.addPost(form.value.title, form.value.content);
+    form.resetForm(); //resets form inputs and validities
   }
 }
