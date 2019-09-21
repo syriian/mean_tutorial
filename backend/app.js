@@ -1,8 +1,26 @@
+// mongodb user: admin, pass: w2xPCYurS3WFNoli
+
 //imports
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+
+const Post = require("./models/post");
 
 const app = express();
+
+// connect to database then validate connection
+mongoose
+  .connect(
+    "mongodb+srv://admin:w2xPCYurS3WFNoli@cluster0-edhyv.mongodb.net/test?retryWrites=true&w=majority",
+    { useNewUrlParser: true, useUnifiedTopology: true }
+  )
+  .then(() => {
+    console.log("connected to databse");
+  })
+  .catch(() => {
+    console.log("connection failed");
+  });
 
 ////////// middlewares //////////////////
 
@@ -26,7 +44,10 @@ app.use((req, res, next) => {
 
 //endpoint for incoming request
 app.post("/api/posts", (req, res, next) => {
-  const post = req.body;
+  const post = new Post({
+    title: req.body.title,
+    content: req.body.content
+  });
   console.log(post);
   res.status(201).json({
     message: "post added successfully" //custom message
