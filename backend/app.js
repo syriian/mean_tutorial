@@ -12,7 +12,7 @@ const app = express();
 // connect to database then validate connection
 mongoose
   .connect(
-    "mongodb+srv://admin:w2xPCYurS3WFNoli@cluster0-edhyv.mongodb.net/test?retryWrites=true&w=majority",
+    "mongodb+srv://admin:w2xPCYurS3WFNoli@cluster0-edhyv.mongodb.net/node-angular?retryWrites=true&w=majority",
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
@@ -48,33 +48,33 @@ app.post("/api/posts", (req, res, next) => {
     title: req.body.title,
     content: req.body.content
   });
+  // save const post to database via mongoose
+  post.save().then(result => {
+    res.status(201).json({
+      message: "post added successfully", //custom message
+      postId: result._id
+    }); // working, new resource created
+  });
   console.log(post);
-  res.status(201).json({
-    message: "post added successfully" //custom message
-  }); // working, new resource created
 });
 
 //use app - create routing
 //can change to get for down narrowing
-app.use("/api/posts", (req, res, next) => {
-  const posts = [
-    {
-      id: "lskfdjfl",
-      title: "first server sidda post",
-      content: "this is coming from server"
-    },
-    {
-      id: "blablabla",
-      title: "second server sidda post",
-      content: "this is coming from server!"
-    }
-  ];
-  //response with message and some dummy data
-  res.status(200).json({
-    message: "posts fetched successfully!",
-    posts: posts
+// extracts data from post then sets posts to incoming data
+app.get("/api/posts", (req, res, next) => {
+  Post.find().then(documents => {
+    res.status(200).json({
+      message: "posts fetched successfully!",
+      posts: documents
+    });
   });
 });
 
+app.delete("/api/posts/:id", (req, res, next) => {
+  Post.deleteOne({ _id: req.params.id }).then(result => {
+    console.log(result);
+    res.status(200).json({ message: "post deleted!" }); //send back status 200 with response
+  });
+});
 //export app
 module.exports = app;
