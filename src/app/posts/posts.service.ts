@@ -15,7 +15,7 @@ export class PostsService {
   getPosts() {
     //fetch posts from backend
     this.http
-      .get<{ message: string; posts: any }>("http://localhost:3000/api/posts")
+      .get<{ message: string; posts: any }>("http://87.96.130.79:9200/post/")
       .pipe(
         map(postData => {
           return postData.posts.map(post => {
@@ -31,6 +31,10 @@ export class PostsService {
         this.posts = transformedPosts;
         this.postUpdated.next([...this.posts]);
       });
+  }
+
+  getPost(id: string) {
+    return { ...this.posts.find(p => p.id === id) };
   }
 
   getPostUpdateListener() {

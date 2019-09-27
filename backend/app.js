@@ -12,7 +12,8 @@ const app = express();
 // connect to database then validate connection
 mongoose
   .connect(
-    "mongodb+srv://admin:w2xPCYurS3WFNoli@cluster0-edhyv.mongodb.net/node-angular?retryWrites=true&w=majority",
+    //connecting to localhost "mongodb+srv://admin:w2xPCYurS3WFNoli@cluster0-edhyv.mongodb.net/node-angular?retryWrites=true&w=majority"
+    "mongodb://localhost:27017/1177",
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
