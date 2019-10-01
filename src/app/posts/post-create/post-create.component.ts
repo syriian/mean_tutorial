@@ -14,9 +14,9 @@ import { Post } from "../post.model";
 export class PostCreateComponent implements OnInit {
   enteredContent = "";
   enteredTitle = "";
+  post: Post;
   private mode = "create";
   private postId: string;
-  private post: Post;
   //---------outputs data to parent via the eventemitter of generic type post
 
   //injecting posts service
@@ -35,7 +35,13 @@ export class PostCreateComponent implements OnInit {
         // assign the sended Id to local variable
         this.postId = paramMap.get("postId");
         //set post to the correct one.
-        this.post = this.postsService.getPost(this.postId);
+        this.postsService.getPost(this.postId).subscribe(postData => {
+          this.post = {
+            id: postData._id,
+            title: postData.title,
+            content: postData.content
+          };
+        });
       } else {
         this.mode = "create";
         this.postId = null;
@@ -44,14 +50,23 @@ export class PostCreateComponent implements OnInit {
   }
 
   //---Passing in form of type NgForm
-  onAddPost(form: NgForm) {
+  onSavePost(form: NgForm) {
     //--validate form
     if (form.invalid) {
       return; // do nothing
     }
 
+    if (this.mode === "create") {
+      this.postsService.addPost(form.value.title, form.value.content);
+    } else {
+      this.postsService.updatePost(
+        this.postId,
+        form.value.title,
+        form.value.content
+      );
+    }
     //---- calling addPost function via the service.
-    this.postsService.addPost(form.value.title, form.value.content);
+
     form.resetForm(); //resets form inputs and validities
   }
 }
