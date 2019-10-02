@@ -1,7 +1,8 @@
 <mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
   <!-- Adding form, dont have to use two-way binding -->
   <!-- Add reference to the form and pass it in as param to controller -->
-  <form (submit)="onSavePost(postForm)" #postForm="ngForm">
+  <form (submit)="onSavePost(postForm)" #postForm="ngForm" *ngIf="!isLoading">
     <!-- trigger onAddPost when submitted -->
     <mat-form-field>
       <!-- Passing data to controller -->
@@ -19,6 +20,12 @@
       <!-- klient side validation -->
       <mat-error *ngIf="title.invalid">please enter a post title</mat-error>
     </mat-form-field>
+    <div>
+      <button mat-stroked-button type="submit" (click)="filePicker.click()">
+        Pick Image
+      </button>
+      <input type="file" #filePicker />
+    </div>
     <mat-form-field>
       <!-- Passing data to controller -->
       <textarea
@@ -35,7 +42,7 @@
 
     <!-- removed manual call to onAddPost() -->
     <!-- more events available -->
-    <button mat-raised-button color="primary" type="submit">
+    <button mat-raised-button color="accent" type="submit">
       Save Post
     </button>
   </form>

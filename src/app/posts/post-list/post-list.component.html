@@ -1,5 +1,6 @@
 <!-- checking if content exists -->
-<mat-accordion multi="true" *ngIf="posts.length > 0">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion multi="true" *ngIf="posts.length > 0 && !isLoading">
   <!-- creating html for every element in array -->
   <mat-expansion-panel *ngFor="let post of posts">
     <mat-expansion-panel-header>
@@ -17,4 +18,6 @@
   </mat-expansion-panel>
 </mat-accordion>
 <!-- default output -->
-<p class="mat-body-1 info-text" *ngIf="posts.length <= 0">No posts added yet</p>
+<p class="mat-body-1 info-text" *ngIf="posts.length <= 0 && !isLoading">
+  No posts added yet
+</p>

@@ -15,6 +15,7 @@ export class PostCreateComponent implements OnInit {
   enteredContent = "";
   enteredTitle = "";
   post: Post;
+  isLoading = false;
   private mode = "create";
   private postId: string;
   //---------outputs data to parent via the eventemitter of generic type post
@@ -34,8 +35,10 @@ export class PostCreateComponent implements OnInit {
         this.mode = "edit";
         // assign the sended Id to local variable
         this.postId = paramMap.get("postId");
+        this.isLoading = true;
         //set post to the correct one.
         this.postsService.getPost(this.postId).subscribe(postData => {
+          this.isLoading = false;
           this.post = {
             id: postData._id,
             title: postData.title,
@@ -55,7 +58,7 @@ export class PostCreateComponent implements OnInit {
     if (form.invalid) {
       return; // do nothing
     }
-
+    this.isLoading = true;
     if (this.mode === "create") {
       this.postsService.addPost(form.value.title, form.value.content);
     } else {

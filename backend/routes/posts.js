@@ -1,8 +1,9 @@
 const express = require("express");
 
+const Post = require("../models/post");
 const router = express.Router();
 
-router.post("/api/posts", (req, res, next) => {
+router.post("", (req, res, next) => {
   const post = new Post({
     title: req.body.title,
     content: req.body.content
@@ -17,14 +18,13 @@ router.post("/api/posts", (req, res, next) => {
   console.log(post);
 });
 
-router.put("/api/posts/:id", (req, res, next) => {
+router.put("/:id", (req, res, next) => {
   const post = new Post({
     _id: req.body.id,
     title: req.body.title,
     content: req.body.content
   });
   Post.updateOne({ _id: req.params.id }, post).then(result => {
-    console.log(result);
     res.status(200).json({ message: "update successful!" });
   });
 });
@@ -32,7 +32,7 @@ router.put("/api/posts/:id", (req, res, next) => {
 //use app - create routing
 //can change to get for down narrowing
 // extracts data from post then sets posts to incoming data
-router.get("/api/posts", (req, res, next) => {
+router.get("", (req, res, next) => {
   Post.find().then(documents => {
     res.status(200).json({
       message: "posts fetched successfully!",
@@ -41,20 +41,22 @@ router.get("/api/posts", (req, res, next) => {
   });
 });
 
-router.get("/api/posts/:id", (req, res, next) => {
-  console.log("hello");
+router.get("/:id", (req, res, next) => {
   Post.findById(req.params.id).then(post => {
     if (post) {
       res.status(200).json(post);
     } else {
+      console.log("failed");
       res.status(404).json({ message: "Post not found!" });
     }
   });
 });
 
-router.delete("/api/posts/:id", (req, res, next) => {
+router.delete("/:id", (req, res, next) => {
   Post.deleteOne({ _id: req.params.id }).then(result => {
     console.log(result);
     res.status(200).json({ message: "post deleted!" }); //send back status 200 with response
   });
 });
+
+module.exports = router;

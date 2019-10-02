@@ -8,7 +8,8 @@ import {
   MatToolbarModule,
   MatExpansionModule,
   MatCardModule,
-  MatButtonModule
+  MatButtonModule,
+  MatProgressSpinnerModule
 } from "@angular/material";
 
 import { AppComponent } from "./app.component";
@@ -37,7 +38,8 @@ import { AppRoutingModule } from "./app-routing.module";
     MatButtonModule,
     MatToolbarModule,
     MatExpansionModule,
-    HttpClientModule
+    HttpClientModule,
+    MatProgressSpinnerModule
   ],
   providers: [], // alternative to add services
   bootstrap: [AppComponent]

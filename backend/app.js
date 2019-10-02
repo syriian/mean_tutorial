@@ -5,7 +5,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const Post = require("./models/post");
+const postsRoutes = require("./routes/posts");
 
 const app = express();
 
@@ -44,6 +44,6 @@ app.use((req, res, next) => {
 });
 
 //endpoint for incoming request
-
+app.use("/api/posts", postsRoutes);
 //export app
 module.exports = app;
