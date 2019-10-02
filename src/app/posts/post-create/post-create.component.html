@@ -2,7 +2,12 @@
   <mat-spinner *ngIf="isLoading"></mat-spinner>
   <!-- Adding form, dont have to use two-way binding -->
   <!-- Add reference to the form and pass it in as param to controller -->
-  <form (submit)="onSavePost(postForm)" #postForm="ngForm" *ngIf="!isLoading">
+  <form
+    [formGroup]="form"
+    (submit)="onSavePost()"
+    #postForm="ngForm"
+    *ngIf="!isLoading"
+  >
     <!-- trigger onAddPost when submitted -->
     <mat-form-field>
       <!-- Passing data to controller -->
@@ -10,15 +15,13 @@
       <input
         matInput
         type="text"
-        name="title"
-        [ngModel]="post?.title"
-        required
-        minlength="3"
+        formControlName="title"
         placeholder="Post title"
-        #title="ngModel"
       />
       <!-- klient side validation -->
-      <mat-error *ngIf="title.invalid">please enter a post title</mat-error>
+      <mat-error *ngIf="form.get('title').invalid"
+        >please enter a post title</mat-error
+      >
     </mat-form-field>
     <div>
       <button mat-stroked-button type="submit" (click)="filePicker.click()">
@@ -31,13 +34,12 @@
       <textarea
         matInput
         rows="6"
-        name="content"
-        [ngModel]="post?.content"
-        required
+        formControlName="content"
         placeholder="Post content"
-        #content="ngModel"
       ></textarea>
-      <mat-error *ngIf="content.invalid">please enter post content</mat-error>
+      <mat-error *ngIf="form.get('content').invalid"
+        >please enter post content</mat-error
+      >
     </mat-form-field>
 
     <!-- removed manual call to onAddPost() -->
