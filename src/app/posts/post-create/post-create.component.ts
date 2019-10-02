@@ -5,6 +5,7 @@ import { PostsService } from "../posts.service";
 import { ActivatedRoute, ParamMap } from "@angular/router";
 import { FnParam } from "@angular/compiler/src/output/output_ast";
 import { Post } from "../post.model";
+import { mimeType } from "./mime-type.validator";
 
 @Component({
   selector: "app-post-create",
@@ -35,7 +36,10 @@ export class PostCreateComponent implements OnInit {
         validators: [Validators.required, Validators.minLength(3)]
       }),
       content: new FormControl(null, { validators: [Validators.required] }),
-      image: new FormControl(null, { validators: [Validators.required] })
+      image: new FormControl(null, {
+        validators: [Validators.required],
+        asyncValidators: [mimeType]
+      })
     });
     //paramMap is a observable, observs for changes in the url
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -72,7 +76,7 @@ export class PostCreateComponent implements OnInit {
     //convert data to normal url
     const reader = new FileReader();
     reader.onload = () => {
-      this.imagePreview = "reader.result";
+      this.imagePreview = reader.result as string;
     };
     reader.readAsDataURL(file);
   }
